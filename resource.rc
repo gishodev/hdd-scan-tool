@@ -1,0 +1,8 @@
+#include "resource.h"
+#include <windows.h>
+
+// Embed Application Icon
+IDI_APP_ICON ICON "app_icon.ico"
+
+// Embed Application Manifest
+1 24 "HddScanner.manifest"

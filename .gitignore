@@ -1,0 +1,38 @@
+# Ignore compiled binaries and build artefacts
+# Executables
+*.exe
+*.dll
+*.pdb
+
+# Object files
+*.obj
+*.o
+*.a
+*.lib
+
+# Intermediate files
+*.res
+*.manifest
+*.exp
+*.iobj
+*.pch
+
+# Build directories
+Debug/
+Release/
+RelWithDebInfo/
+MinSizeRel/
+
+# Visual Studio generated files
+.vs/
+*.VC.db
+*.VC.opendb
+.agents/
+
+# Generated files by the build script
+*.exe
+*.exe.manifest
+
+# Temporary files
+*.tmp
+*.log
