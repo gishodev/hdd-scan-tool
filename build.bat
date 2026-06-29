@@ -12,6 +12,13 @@ if %ERRORLEVEL% EQU 0 (
     goto compile
 )
 
+:: Check if g++.exe is already available in the current environment
+where g++.exe >nul 2>nul
+if %ERRORLEVEL% EQU 0 (
+    echo Compiler [g++.exe] GCC is already in the PATH.
+    goto compile_gcc
+)
+
 :: 1. Try to find Visual Studio using vswhere with SystemDrive path
 set "VSWHERE_PATH=%SystemDrive%\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
 if not exist "%VSWHERE_PATH%" (
@@ -102,5 +109,29 @@ if %ERRORLEVEL% NEQ 0 (
 
 echo.
 echo ===================================================
-echo BUILD SUCCESS: Produced HddScanner.exe (32-bit x86)
+echo BUILD SUCCESS: Produced HddScanner.exe (MSVC Build)
 echo ===================================================
+exit /b 0
+
+:compile_gcc
+echo.
+echo Compiling Resources (GCC/windres)...
+windres resource.rc -O coff -o resource.res
+if %ERRORLEVEL% NEQ 0 (
+    echo ERROR: Resource compilation failed.
+    exit /b %ERRORLEVEL%
+)
+
+echo.
+echo Compiling and Linking Source Files (GCC/g++)...
+g++ -O2 -std=c++17 -mwindows -static -DUNICODE -D_UNICODE main.cpp scanner.cpp resource.res -o HddScanner.exe -luser32 -lgdi32 -lcomctl32 -lgdiplus
+if %ERRORLEVEL% NEQ 0 (
+    echo ERROR: Compilation or linking failed.
+    exit /b %ERRORLEVEL%
+)
+
+echo.
+echo ===================================================
+echo BUILD SUCCESS: Produced HddScanner.exe (GCC Build)
+echo ===================================================
+exit /b 0
